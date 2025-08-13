@@ -1,6 +1,5 @@
-import { LoginPage } from "../../pages/login";
-import { RegisterPage } from "../../pages/register";
-import type { RouteType } from "../../shared/types";
+import { LoginPage, RegisterPage } from "@/pages";
+import type { RouteType } from "@/shared/types";
 
 export const unauthRountes: RouteType[] = [
   {
