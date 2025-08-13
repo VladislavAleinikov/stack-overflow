@@ -2,8 +2,9 @@ export type User = {
   id: number;
   username: string;
   role: UserRole;
-  statistic?: Statistic
 };
+
+export type UserWithStatistic = User & { statistic: Statistic };
 
 enum UserRole {
   USER = "user",
