@@ -1,5 +1,4 @@
 import {
-  PostPage,
   UserPage,
   UsersPage,
   PostsPage,
@@ -26,15 +25,11 @@ export const authRoutes: RouteType[] = [
     element: <PostsPage isThisUserPost />,
   },
   {
-    path: "/posts/:id",
-    element: <PostPage />,
-  },
-  {
     path: "/questions",
     element: <QuestionsPage />,
   },
   {
-    path: "/question/:id",
+    path: "/questions/:id",
     element: <QuestionPage />,
   },
 ];
