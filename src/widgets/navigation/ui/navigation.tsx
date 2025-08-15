@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Navbar } from "./navbar";
 import { useLocation } from "react-router";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import MenuIcon from "@mui/icons-material/Menu";
 import { cn } from "@/shared/utils";
+import { Header } from "./header";
 
 export const Navigation = () => {
   const isMobile = window.innerWidth <= 768;
@@ -12,7 +12,6 @@ export const Navigation = () => {
   const navbarRef = useRef<HTMLDivElement>(null);
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
-  
 
   useEffect(() => {
     if (isMobile) {
@@ -86,15 +85,7 @@ export const Navigation = () => {
           isMobile && "left-0 w-full"
         )}
       >
-        <nav className="bg-transparent px-3 py-2 w-full">
-          {isCollapsed && (
-            <MenuIcon
-              onClick={resetWidth}
-              role="button"
-              className="h-6 w-6 text-muted-foreground"
-            />
-          )}
-        </nav>
+        <Header isCollapsed={isCollapsed} onResetWidth={resetWidth} />
       </div>
     </>
   );
