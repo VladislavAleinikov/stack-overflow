@@ -1,4 +1,3 @@
-export { AccountPage } from "./account";
 export {Layout } from "./layout"
 export {LoginPage } from "./login"
 export { PostPage} from "./post"
