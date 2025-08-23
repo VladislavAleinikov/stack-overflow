@@ -8,12 +8,16 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import "../styles/global.css";
 import { PageRouter } from "../router";
+import { QueryClientProvider } from "../providers/query-client-provider";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <StyledEngineProvider enableCssLayer>
-      <GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
-      <PageRouter />
-    </StyledEngineProvider>
+    <QueryClientProvider>
+        <StyledEngineProvider enableCssLayer>
+          <GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
+          <CssBaseline />
+          <PageRouter />
+        </StyledEngineProvider>
+    </QueryClientProvider>
   </StrictMode>
 );
