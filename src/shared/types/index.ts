@@ -5,3 +5,4 @@ export type { Question } from "./question";
 export type { Answer } from "./answer";
 export type { RouteType } from "./route";
 export type { FetchedData } from "./fetched-data";
+export type { FCWithSkeleton } from "./fc-with-skeleton";
