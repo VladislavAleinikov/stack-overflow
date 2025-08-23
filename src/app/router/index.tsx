@@ -3,21 +3,35 @@ import type { RouteType } from "../../shared/types";
 import { publicRoutes, unauthRountes, authRoutes } from "./consts";
 import { BrowserRouter } from "react-router";
 import { Layout } from "../../pages/layout";
-import { useAuthUser } from "../../shared/hooks";
+import { useQuery } from "@tanstack/react-query";
+import { createAuthQueryOptions } from "@/shared/query-options";
+import { CircularProgress } from "@mui/material";
 
 export const PageRouter = () => {
-  const isAuth = useAuthUser((store) => store.authUser !== null);
+  const { data, isLoading } = useQuery(createAuthQueryOptions());
+
   const routes: RouteType[] = publicRoutes.concat(
-    isAuth ? authRoutes : unauthRountes
+    data === null ? unauthRountes : authRoutes
   );
 
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          {routes.map(({ path, element }) => (
-            <Route key={path} path={path} element={element} />
-          ))}
+          {isLoading ? (
+            <Route
+              path="*"
+              element={
+                <div className="w-full h-[80vh] flex justify-center items-center">
+                  <CircularProgress />
+                </div>
+              }
+            />
+          ) : (
+            routes.map(({ path, element }) => (
+              <Route key={path} path={path} element={element} />
+            ))
+          )}
         </Route>
       </Routes>
     </BrowserRouter>
