@@ -7,6 +7,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import "../styles/global.css";
+import { Toaster } from "sonner";
 import { PageRouter } from "../router";
 import { QueryClientProvider } from "../providers/query-client-provider";
 
@@ -17,6 +18,7 @@ createRoot(document.getElementById("root")!).render(
           <GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
           <CssBaseline />
           <PageRouter />
+          <Toaster />
         </StyledEngineProvider>
     </QueryClientProvider>
   </StrictMode>
