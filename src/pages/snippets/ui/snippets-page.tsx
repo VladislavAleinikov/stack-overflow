@@ -10,6 +10,9 @@ export const SnippetsPage: React.FC<SnippetsPageProps> = ({
 }) => {
   return (
     <div>
+      <Suspense fallback={<SnippetsList.Skeleton />}>
+        <SnippetsList />
+      </Suspense>
     </div>
   );
 };
