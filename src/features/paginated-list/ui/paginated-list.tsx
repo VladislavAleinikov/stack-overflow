@@ -5,6 +5,7 @@ import { FormControl, Input, InputLabel, Paper, Skeleton } from "@mui/material";
 import { useSearchParams } from "react-router";
 import { Pagination } from "@/shared/ui/pagination";
 import { useDebounce } from "@/shared/hooks";
+import { SearchInput } from "@/shared/ui/search-input";
 
 interface PaginatedListProps<P> {
   title: string;
@@ -12,6 +13,7 @@ interface PaginatedListProps<P> {
   itemsProps: P[];
   ItemComponent: FCWithSkeleton<P>;
   sortOptions: [string, string][];
+  searchByOptions?: string[];
   className?: string;
 }
 
@@ -21,13 +23,19 @@ export function PaginatedList<T extends { key: number }>({
   itemsProps,
   ItemComponent,
   sortOptions,
+  searchByOptions,
   className,
 }: PaginatedListProps<T>) {
   const [searchParams, setSearchParams] = useSearchParams({
     page: "1",
     search: "",
+    searchBy: "",
     sortBy: "",
   });
+  const selectedSearchByOptions = searchParams.get("searchBy")
+    ? searchParams.getAll("searchBy")
+    : searchByOptions;
+  
   const currentPage = +(searchParams.get("page") ?? 1);
   const debouncedHandler = useDebounce(handleSearch);
 
@@ -41,6 +49,15 @@ export function PaginatedList<T extends { key: number }>({
   const onSortOptionChange = (option: string) => {
     setSearchParams((params) => {
       params.append("sortBy", option);
+      return params;
+    });
+  };
+
+  const onSearchByOptionChange = (options: string[]) => {
+    setSearchParams((params) => {
+      params.delete("searchBy");
+      options.forEach((option) => params.append("searchBy", option));
+      params.set("page", "1");
       return params;
     });
   };
@@ -63,14 +80,13 @@ export function PaginatedList<T extends { key: number }>({
       <Paper className="p-12 w-full text-end max-w-[80%] space-y-6">
         <h2 className="uppercase tracking-widest">{title}</h2>
         <div className="flex items-end space-x-8">
-          <FormControl variant="standard">
-            <InputLabel htmlFor="search">Search...</InputLabel>
-            <Input
-              id="search"
-              defaultValue={searchParams.get("search")}
-              onChange={debouncedHandler}
-            />
-          </FormControl>
+          <SearchInput
+            defaultValue={searchParams.get("search") || ""}
+            onChange={debouncedHandler}
+            searchByOptions={searchByOptions}
+            onSearchByChange={searchByOptions && onSearchByOptionChange}
+            defaultSearchBy={selectedSearchByOptions}
+          />
           <SortBy
             options={sortOptions}
             selectedOption={searchParams.get("sortBy")}
@@ -100,7 +116,7 @@ PaginatedList.Skeleton = ({
           className="ml-auto mb-12 w-[300px] h-[70px]"
         />
         <div className="flex items-end space-x-8">
-          <Skeleton variant="rounded" className="w-[160px] h-[30px]" />
+          <Skeleton variant="rounded" className="w-[300px] h-[30px]" />
           <Skeleton variant="rounded" className="w-[100px] h-[30px]" />
         </div>
         <div className={cn("flex flex-col gap-4", className)}>
