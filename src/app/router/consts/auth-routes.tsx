@@ -1,7 +1,7 @@
 import {
   UserPage,
   UsersPage,
-  PostsPage,
+  SnippetsPage,
   QuestionPage,
   QuestionsPage,
 } from "@/pages";
@@ -22,7 +22,7 @@ export const authRoutes: RouteType[] = [
   },
   {
     path: "/posts/my",
-    element: <PostsPage isThisUserPost />,
+    element: <SnippetsPage isThisUserPost />,
   },
   {
     path: "/questions",
