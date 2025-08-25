@@ -56,7 +56,7 @@ export const Layout = () => {
       <aside
         ref={sidebarRef}
         className={cn(
-          "group/sidebar bg-secondary overflow-y-auto relative flex w-60 flex-col z-[99999] transition-all ease-in-out duration-300",
+          "group/sidebar bg-secondary overflow-y-auto relative flex w-60 flex-col z-[99] transition-all ease-in-out duration-300",
           isMobile && "w-0"
         )}
       >
@@ -77,7 +77,7 @@ export const Layout = () => {
       <div
         ref={navbarRef}
         className={cn(
-          "absolute top-0 z-[99999] left-60 w-[calc(100%-240px)] transition-all ease-in-out duration-300",
+          "absolute top-0 z-[99] left-60 w-[calc(100%-240px)] transition-all ease-in-out duration-300",
           isMobile && "left-0 w-full"
         )}
       >
