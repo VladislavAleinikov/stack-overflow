@@ -25,7 +25,7 @@ export const navItems: NavItem[] = [
     isPublic: false,
   },
   {
-    to: "/posts/my",
+    to: "/users/me/snippets",
     title: "My snippets",
     icon: <TextSnippetIcon className="w-5 h-5 mr-2" />,
     isPublic: false,

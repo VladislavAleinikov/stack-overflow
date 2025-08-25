@@ -21,8 +21,12 @@ export const authRoutes: RouteType[] = [
     element: <UserPage />,
   },
   {
-    path: "/posts/my",
-    element: <SnippetsPage isThisUserPost />,
+    path: "/users/me/snippets",
+    element: <SnippetsPage isThisUserSnippets />,
+  },
+  {
+    path: "/users/:id/snippets",
+    element: <SnippetsPage />,
   },
   {
     path: "/questions",

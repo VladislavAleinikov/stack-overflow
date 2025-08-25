@@ -1,15 +1,15 @@
 import type { PaginatedData, Snippet } from "@/shared/types";
 import { queryOptions } from "@tanstack/react-query";
 
-export const createGetPostsQueryOptions = (params: URLSearchParams) => {
+export const createGetSnippetsQueryOptions = (params: URLSearchParams) => {
   return queryOptions({
-    queryKey: ["posts", params],
-    queryFn: () => getPosts(params),
+    queryKey: ["snippets", params],
+    queryFn: () => getSnippets(params),
     staleTime: 3 * 60 * 1000,
   });
 };
 
-const getPosts = async (
+const getSnippets = async (
   params: URLSearchParams
 ): Promise<PaginatedData<Snippet>> => {
   const res = await fetch(`/api/snippets?${params}`);
