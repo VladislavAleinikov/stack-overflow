@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { createGetSnippetsQueryOptions } from "../query-options/create-get-posts-query-option";
+import { createGetSnippetsQueryOptions } from "../query-options/create-get-snippets-query-option";
 import { PaginatedList } from "@/features/paginated-list";
 import { searchByOptions, sortOptions } from "../consts";
 import { SnippetItem } from "@/features/snippet-item";
