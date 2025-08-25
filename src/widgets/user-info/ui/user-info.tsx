@@ -15,7 +15,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { parseStatistic } from "@/shared/utils";
+import { parseStatistic } from "../utils";
 import { createDeleteUserMutationOptions } from "../query-options/create-delete-user-mutation-options";
 
 interface UserInfoProps {

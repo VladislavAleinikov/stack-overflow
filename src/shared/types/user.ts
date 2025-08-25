@@ -11,7 +11,7 @@ enum UserRole {
   ADMIN = "admin",
 }
 
-type Statistic = {
+export type Statistic = {
   snippetsCount: number;
   rating: number;
   commentsCount: number;

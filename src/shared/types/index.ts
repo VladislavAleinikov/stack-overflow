@@ -1,4 +1,4 @@
-export type { User, UserWithStatistic } from "./user";
+export type { User, UserWithStatistic, Statistic } from "./user";
 export type { Snippet } from "./snippet";
 export { MarkType, Languages } from "./snippet";
 export type { Comment } from "./comment";
