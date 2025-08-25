@@ -6,27 +6,28 @@ export type Snippet = {
   code: string;
   user: User;
   marks: Mark[];
-  comments: Comment[]
+  comments: Comment[];
 };
 
 type Mark = {
   id: number;
   type: MarkType;
+  user: User;
 };
 
-enum MarkType {
+export enum MarkType {
   LIKE = "like",
   DISLIKE = "dislike",
   NONE = "none",
 }
 
-enum Languages {
-  "JavaScript",
-  "Python",
-  "Java",
-  "C/C++",
-  "C#",
-  "Go",
-  "Kotlin",
-  "Ruby",
+export enum Languages {
+  "JavaScript" = "JavaScript",
+  "Python" = "Python",
+  "Java" = "Java",
+  "C/C++" = "C/C++",
+  "C#" = "C#",
+  "Go" = "Go",
+  "Kotlin" = "Kotlin",
+  "Ruby" = "Ruby",
 }

@@ -1,11 +1,12 @@
 import { SortBy } from "@/shared/ui/sort-by";
 import type { FCWithSkeleton, PaginatedData } from "@/shared/types";
 import { cn } from "@/shared/utils";
-import { FormControl, Input, InputLabel, Paper, Skeleton } from "@mui/material";
+import { Button, Paper, Skeleton } from "@mui/material";
 import { useSearchParams } from "react-router";
 import { Pagination } from "@/shared/ui/pagination";
 import { useDebounce } from "@/shared/hooks";
 import { SearchInput } from "@/shared/ui/search-input";
+import AddIcon from "@mui/icons-material/Add";
 
 interface PaginatedListProps<P> {
   title: string;
@@ -14,6 +15,7 @@ interface PaginatedListProps<P> {
   ItemComponent: FCWithSkeleton<P>;
   sortOptions: [string, string][];
   searchByOptions?: string[];
+  onAddItem?: () => void;
   className?: string;
 }
 
@@ -24,6 +26,7 @@ export function PaginatedList<T extends { key: number }>({
   ItemComponent,
   sortOptions,
   searchByOptions,
+  onAddItem,
   className,
 }: PaginatedListProps<T>) {
   const [searchParams, setSearchParams] = useSearchParams({
@@ -35,7 +38,7 @@ export function PaginatedList<T extends { key: number }>({
   const selectedSearchByOptions = searchParams.get("searchBy")
     ? searchParams.getAll("searchBy")
     : searchByOptions;
-  
+
   const currentPage = +(searchParams.get("page") ?? 1);
   const debouncedHandler = useDebounce(handleSearch);
 
@@ -92,11 +95,26 @@ export function PaginatedList<T extends { key: number }>({
             selectedOption={searchParams.get("sortBy")}
             onChange={onSortOptionChange}
           />
+          {onAddItem && (
+            <Button
+              variant="contained"
+              size="small"
+              className="ml-auto"
+              onClick={onAddItem}
+            >
+              <AddIcon className="w-4 h-4 mr-2" />
+              Add new
+            </Button>
+          )}
         </div>
         <div className={cn("flex flex-col gap-4", className)}>
-          {itemsProps.map((props) => (
-            <ItemComponent {...props} key={props.key} />
-          ))}
+          {itemsProps.length ? (
+            itemsProps.map((props) => (
+              <ItemComponent {...props} key={props.key} />
+            ))
+          ) : (
+            <span className="mt-4 text-xl">Sorry, nothing was found.</span>
+          )}
         </div>
       </Paper>
     </div>

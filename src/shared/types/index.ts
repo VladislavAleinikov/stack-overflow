@@ -1,5 +1,6 @@
 export type { User, UserWithStatistic } from "./user";
 export type { Snippet } from "./snippet";
+export { MarkType, Languages } from "./snippet";
 export type { Comment } from "./comment";
 export type { Question } from "./question";
 export type { Answer } from "./answer";
