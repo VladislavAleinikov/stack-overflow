@@ -16,6 +16,7 @@ import { useNavigate } from "react-router";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { parseStatistic } from "@/shared/utils";
+import { createDeleteUserMutationOptions } from "../query-options/create-delete-user-mutation-options";
 
 interface UserInfoProps {
   userId: number;
@@ -24,18 +25,29 @@ interface UserInfoProps {
 export const UserInfo: FCWithSkeleton<UserInfoProps> = ({ userId }) => {
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
   const { data: authUser } = useSuspenseQuery(createAuthQueryOptions());
-  const { mutate: logout } = useMutation(createLogoutMutationOptions());
+  const { mutateAsync: logout } = useMutation(createLogoutMutationOptions());
+  const { mutateAsync: deleteUser } = useMutation(createDeleteUserMutationOptions());
   const { data: user } = useSuspenseQuery(createUserQueryOptions(userId));
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const onLogout = async () => {
-    await logout();
-    await queryClient.invalidateQueries({
-      queryKey: createAuthQueryOptions().queryKey,
-    });
-    navigate("/");
+    logout().then(() => {
+      queryClient.invalidateQueries({
+        queryKey: createAuthQueryOptions().queryKey,
+      });
+      navigate("/");
+    })
   };
+
+  const onDelete = async () => {
+    deleteUser().then(() => {
+      queryClient.invalidateQueries({
+        queryKey: createAuthQueryOptions().queryKey,
+      });
+      navigate("/");
+    })
+  }
 
   if (user === null) {
     return (
@@ -53,11 +65,25 @@ export const UserInfo: FCWithSkeleton<UserInfoProps> = ({ userId }) => {
 
   return (
     <Paper className="w-[80%] p-16 flex justify-around">
-      <div className="space-y-1">
+      <div className="flex flex-col space-y-1">
         <Avatar className="w-20 h-20 text-6xl">{user.username[0]}</Avatar>
         <h6>{user.username}</h6>
         <p className="text-xs italic">Id: {user.id}</p>
         <p className="text-xs italic">Role: {user.role}</p>
+        <Button
+          variant="contained"
+          size="small"
+          onClick={() => navigate(`/users/${userId}/snippets`)}
+        >
+          Snippets
+        </Button>
+        <Button
+          variant="contained"
+          size="small"
+          onClick={() => navigate(`/users/${userId}/questions`)}
+        >
+          Questions
+        </Button>
         {authUser?.id === userId && (
           <div className="space-x-2">
             <IconButton
@@ -75,6 +101,7 @@ export const UserInfo: FCWithSkeleton<UserInfoProps> = ({ userId }) => {
               open={isAlertOpen}
               title="Are you shure you want to delete your account?"
               text="This action can't be canceled"
+              onConfirm={onDelete}
               onClose={() => setIsAlertOpen(false)}
             />
           </div>
