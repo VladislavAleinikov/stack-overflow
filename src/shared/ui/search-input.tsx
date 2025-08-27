@@ -63,7 +63,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
 
   return (
     <FormControl variant="standard" className="w-[300px]">
-      <InputLabel htmlFor="search">
+      <InputLabel htmlFor="search" className="pr-8">
         {selectedOptions.length
           ? `Search by: ${selectedOptions.join(", ")}`
           : "Search..."}
