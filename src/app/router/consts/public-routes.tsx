@@ -1,4 +1,5 @@
-import { PostPage, SnippetsPage } from "@/pages";
+import { SnippetPage, SnippetsPage } from "@/pages";
+
 import type { RouteType } from "@/shared/types";
 
 export const publicRoutes: RouteType[] = [
@@ -7,7 +8,7 @@ export const publicRoutes: RouteType[] = [
     element: <SnippetsPage />,
   },
   {
-    path: "/posts/:id",
-    element: <PostPage />,
+    path: "/snippets/:id",
+    element: <SnippetPage />,
   },
 ];
