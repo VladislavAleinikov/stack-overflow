@@ -51,7 +51,7 @@ export function PaginatedList<T extends { key: number }>({
 
   const onSortOptionChange = (option: string) => {
     setSearchParams((params) => {
-      params.append("sortBy", option);
+      params.set("sortBy", option);
       return params;
     });
   };
