@@ -1,6 +1,7 @@
-import type { FetchedData, Languages, Snippet } from "@/shared/types";
+import type { FetchedData, Snippet } from "@/shared/types";
 import { mutationOptions } from "@tanstack/react-query";
 import { toast } from "sonner";
+import type { SnippetRequest } from "../types";
 
 export const createAddSnippetMutationOptions = () => {
   return mutationOptions({
@@ -15,10 +16,7 @@ export const createAddSnippetMutationOptions = () => {
   });
 };
 
-const addSnippet = async (body: {
-  code: string;
-  language: Languages;
-}): Promise<FetchedData<Snippet>> => {
+const addSnippet = async (body: SnippetRequest): Promise<FetchedData<Snippet>> => {
   const res = await fetch("/api/snippets", {
     method: "POST",
     headers: {

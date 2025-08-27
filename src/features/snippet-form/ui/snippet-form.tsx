@@ -54,32 +54,8 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
   const { mode, systemMode } = useColorScheme();
   const themeStyle = getThemeStyle(mode, systemMode);
 
-  const onSelectLanguage = (event: SelectChangeEvent) => {
-    setSelectedLanguage(event.target.value as Languages);
-  };
-
-  const onAdd = async () => {
-    addSnippet({
-      code,
-      language: selectedLanguage,
-    }).then(() => {
-      queryClient.invalidateQueries({ queryKey: ["snippets"] });
-      onClose();
-    });
-  };
-
-  const onUpdate = async () => {
-    updateSnippet({
-      code,
-      language: selectedLanguage,
-    }).then(() => {
-      queryClient.invalidateQueries({ queryKey: ["snippets"] });
-      onClose();
-    });
-  };
-
-  const onDelete = async () => {
-    deleteSnippet().then(() => {
+  const onRequest = (promise: Promise<unknown>) => {
+    promise.then(() => {
       queryClient.invalidateQueries({ queryKey: ["snippets"] });
       onClose();
     });
@@ -104,7 +80,9 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
             labelId="language"
             value={selectedLanguage}
             label="Age"
-            onChange={onSelectLanguage}
+            onChange={(e) =>
+              setSelectedLanguage(e.target.value as Languages)
+            }
           >
             {Object.values(Languages).map((lang) => (
               <MenuItem value={lang} key={lang}>
@@ -126,7 +104,9 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
           <>
             <Button
               variant="contained"
-              onClick={onUpdate}
+              onClick={() =>
+                onRequest(updateSnippet({ code, language: selectedLanguage }))
+              }
               disabled={
                 code.length === 0 ||
                 (code === snippet.code && selectedLanguage === snippet.language)
@@ -148,14 +128,16 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
               open={isAlertOpen}
               title="Are you shure you want to delete this snippet?"
               text="This action can't be canceled"
-              onConfirm={onDelete}
+              onConfirm={() => onRequest(deleteSnippet())}
               onClose={() => setIsAlertOpen(false)}
             />
           </>
         ) : (
           <Button
             variant="contained"
-            onClick={onAdd}
+            onClick={() =>
+              onRequest(addSnippet({ code, language: selectedLanguage }))
+            }
             disabled={code.length === 0}
           >
             <AddIcon className="w-4 h-4 mr-2" />

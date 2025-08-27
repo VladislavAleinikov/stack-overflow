@@ -1,12 +1,12 @@
-import type { FetchedData, Languages, Snippet } from "@/shared/types";
+import type { FetchedData, Snippet } from "@/shared/types";
 import { mutationOptions } from "@tanstack/react-query";
 import { toast } from "sonner";
+import type { SnippetRequest } from "../types";
 
 export const createUpdateSnippetMutationOptions = (id: number) => {
   return mutationOptions({
     mutationKey: ["update-snippet"],
-    mutationFn: (body: { code: string; language: Languages }) =>
-      updateSnippet(id, body),
+    mutationFn: (body: SnippetRequest) => updateSnippet(id, body),
     onError: (error) => {
       toast.error(error.message);
     },
@@ -18,10 +18,7 @@ export const createUpdateSnippetMutationOptions = (id: number) => {
 
 const updateSnippet = async (
   id: number,
-  body: {
-    code: string;
-    language: Languages;
-  }
+  body: SnippetRequest
 ): Promise<FetchedData<Snippet>> => {
   const res = await fetch(`/api/snippets/${id}`, {
     method: "PATCH",
