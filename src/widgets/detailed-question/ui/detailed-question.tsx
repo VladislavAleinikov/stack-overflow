@@ -7,6 +7,7 @@ import { CodeSnippet } from "@/entity/code-snippet";
 import { createAuthQueryOptions } from "@/shared/query-options";
 import EditIcon from "@mui/icons-material/Edit";
 import { QuestionForm } from "@/features/question-form";
+import { AnswersList } from "@/widgets/answers-list";
 import { useState } from "react";
 import { cn } from "@/shared/utils";
 
@@ -81,6 +82,11 @@ export const DetailedQuestion: FCWithSkeleton<DetailedQuestionProps> = ({
         />
       </div>
       <Divider />
+      <AnswersList
+        questionId={id}
+        answers={answers}
+        isAuthUserQuestionAuthor={isAuthUserAuthor}
+      />
     </Paper>
   );
 };
@@ -95,6 +101,7 @@ DetailedQuestion.Skeleton = () => {
         <Skeleton variant="rounded" className="w-full h-[150px]" />
       </div>
       <Divider />
+      <AnswersList.Skeleton />
     </Paper>
   );
 };
