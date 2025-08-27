@@ -7,7 +7,7 @@ import { UserItem } from "@/entity/user-item";
 import { sortOptions } from "../consts";
 
 export const UsersList = () => {
-  const [searchParams, setSearchParams] = useSearchParams({
+  const [searchParams] = useSearchParams({
     page: "1",
     sortBy: "",
     search: "",

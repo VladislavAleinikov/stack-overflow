@@ -1,4 +1,4 @@
-import type { Question, Snippet } from "@/shared/types";
+import type { Snippet } from "@/shared/types";
 import { queryOptions } from "@tanstack/react-query";
 
 export const createSnippetQueryOptions = (id: number) => {

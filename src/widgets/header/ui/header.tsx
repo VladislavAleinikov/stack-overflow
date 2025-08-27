@@ -8,7 +8,6 @@ import { ThemeSwitcher } from "@/shared/ui/theme-switcher";
 import { useNavigate } from "react-router";
 import {
   useMutation,
-  useQuery,
   useSuspenseQuery,
   useQueryClient,
 } from "@tanstack/react-query";

@@ -1,4 +1,3 @@
-import { Languages } from "@/shared/types";
 import { StreamLanguage } from "@codemirror/language";
 import { javascript } from "@codemirror/lang-javascript";
 import { python } from "@codemirror/lang-python";

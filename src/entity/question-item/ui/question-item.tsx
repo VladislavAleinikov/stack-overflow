@@ -4,9 +4,8 @@ import {
   Paper,
   Skeleton,
   Tooltip,
-  dividerClasses,
 } from "@mui/material";
-import { NavLink, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { cn } from "@/shared/utils";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createAuthQueryOptions } from "@/shared/query-options";

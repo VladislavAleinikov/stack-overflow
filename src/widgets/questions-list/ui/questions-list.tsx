@@ -4,14 +4,12 @@ import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { createGetQuestionsQueryOptions } from "../query-options/create-get-questions-query-option";
 import { PaginatedList } from "@/features/paginated-list";
 import { searchByOptions, sortOptions } from "../consts";
-import { SnippetItem } from "@/features/snippet-item";
-import { SnippetForm } from "@/features/snippet-form";
 import { QuestionItem } from "@/entity/question-item";
 import type { Question } from "@/shared/types";
 import { QuestionForm } from "@/features/question-form";
 
 export const QuestionsList = () => {
-  const [searchParams, setSearchParams] = useSearchParams({
+  const [searchParams] = useSearchParams({
     page: "1",
     sortBy: "",
     search: "",

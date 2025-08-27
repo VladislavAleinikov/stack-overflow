@@ -8,7 +8,6 @@ import {
   FormHelperText,
   Input,
   InputLabel,
-  Paper,
 } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { createChangePasswordMutationOptions } from "@/features/change-password-form/query-options/create-change-password-mutation-options";

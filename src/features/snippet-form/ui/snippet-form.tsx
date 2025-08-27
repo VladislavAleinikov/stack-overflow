@@ -7,7 +7,6 @@ import {
   MenuItem,
   Select,
   useColorScheme,
-  type SelectChangeEvent,
   DialogContent,
   Button,
 } from "@mui/material";

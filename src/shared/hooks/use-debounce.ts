@@ -1,5 +1,5 @@
-export function useDebounce<Params extends any[]>(
-  func: (...args: Params) => any,
+export function useDebounce<Params extends unknown[]>(
+  func: (...args: Params) => unknown,
   timeout: number = 300
 ): (...args: Params) => void {
   let timer: NodeJS.Timeout;

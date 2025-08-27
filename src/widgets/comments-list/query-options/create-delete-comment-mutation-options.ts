@@ -1,7 +1,6 @@
 import type { FetchedData, Snippet } from "@/shared/types";
 import { mutationOptions } from "@tanstack/react-query";
 import { toast } from "sonner";
-import type { CommentRequest } from "../types";
 
 export const createDeleteCommentMutationOptions = () => {
   return mutationOptions({
