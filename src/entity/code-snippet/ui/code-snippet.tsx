@@ -9,10 +9,12 @@ import PersonIcon from "@mui/icons-material/Person";
 import EditIcon from "@mui/icons-material/Edit";
 import { langExtentions } from "../consts";
 import { getThemeStyle } from "../utils";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { createAuthQueryOptions } from "@/shared/query-options";
 
 interface CodeSnippetProps {
   author: User;
-  snippetId: number;
+  snippetId?: number;
   code: string;
   language: Languages;
   showLineNumbers?: boolean;
@@ -34,6 +36,7 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
   maxHeight = 300,
   onEdit,
 }) => {
+  const { data: authUser } = useSuspenseQuery(createAuthQueryOptions());
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const { mode, systemMode } = useColorScheme();
@@ -44,8 +47,6 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
-
-  
 
   return (
     <div
@@ -89,6 +90,7 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
         ) : (
           <button
             onClick={() => navigate(`/users/${author.id}`)}
+            disabled={authUser === null}
             className="cursor-pointer text-xs text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
           >
             <PersonIcon className="w-4 h-4 mr-2" />
@@ -96,13 +98,15 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
           </button>
         )}
 
-        <button
-          onClick={() => navigate(`/snippets/${snippetId}`)}
-          className="cursor-pointer text-xs text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-        >
-          <CommentIcon className="w-4 h-4 mr-2" />
-          <span>Comments</span>
-        </button>
+        {snippetId && (
+          <button
+            onClick={() => navigate(`/snippets/${snippetId}`)}
+            className="cursor-pointer text-xs text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+          >
+            <CommentIcon className="w-4 h-4 mr-2" />
+            <span>Comments</span>
+          </button>
+        )}
       </div>
     </div>
   );
