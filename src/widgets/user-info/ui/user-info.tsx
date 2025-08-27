@@ -77,13 +77,6 @@ export const UserInfo: FCWithSkeleton<UserInfoProps> = ({ userId }) => {
         >
           Snippets
         </Button>
-        <Button
-          variant="contained"
-          size="small"
-          onClick={() => navigate(`/users/${userId}/questions`)}
-        >
-          Questions
-        </Button>
         {authUser?.id === userId && (
           <div className="space-x-2">
             <IconButton
