@@ -7,6 +7,7 @@ import { createAuthQueryOptions } from "@/shared/query-options";
 import EditIcon from "@mui/icons-material/Edit";
 import { useState } from "react";
 import { SnippetForm } from "@/features/snippet-form";
+import { CommentsList } from "@/widgets/comments-list";
 import { SnippetItem } from "@/features/snippet-item";
 
 interface DetailedSnippetProps {
@@ -70,6 +71,7 @@ export const DetailedSnippet: FCWithSkeleton<DetailedSnippetProps> = ({
         />
       </div>
       <Divider />
+      <CommentsList snippetId={id} comments={comments} />
     </Paper>
   );
 };
@@ -82,6 +84,7 @@ DetailedSnippet.Skeleton = () => {
         <SnippetItem.Skeleton />
       </div>
       <Divider />
+      <CommentsList.Skeleton />
     </Paper>
   );
 };
