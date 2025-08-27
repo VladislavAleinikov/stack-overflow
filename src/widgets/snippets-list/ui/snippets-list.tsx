@@ -6,7 +6,10 @@ import { PaginatedList } from "@/features/paginated-list";
 import { searchByOptions, sortOptions } from "../consts";
 import { SnippetItem } from "@/features/snippet-item";
 import type { FCWithSkeleton, Snippet } from "@/shared/types";
-import { createUserQueryOptions } from "@/shared/query-options";
+import {
+  createAuthQueryOptions,
+  createUserQueryOptions,
+} from "@/shared/query-options";
 import { SnippetForm } from "@/features/snippet-form";
 
 interface SnippetsListProps {
@@ -22,6 +25,7 @@ export const SnippetsList: FCWithSkeleton<SnippetsListProps> = ({ userId }) => {
   const queryClient = useQueryClient();
   const [isSnippetFormOpen, setIsSnippetFormOpen] = useState<boolean>(false);
   const [snippet, setSnippet] = useState<Snippet>();
+  const { data: authUser } = useSuspenseQuery(createAuthQueryOptions());
   const { data: user } = useSuspenseQuery(createUserQueryOptions(userId || -1));
   const {
     data: { data: snippets, meta },
@@ -30,7 +34,7 @@ export const SnippetsList: FCWithSkeleton<SnippetsListProps> = ({ userId }) => {
   const onOpenSnippetFrom = (snippet?: Snippet) => {
     setSnippet(snippet);
     setIsSnippetFormOpen(true);
-  }
+  };
 
   useEffect(() => {
     queryClient.invalidateQueries({
@@ -38,7 +42,7 @@ export const SnippetsList: FCWithSkeleton<SnippetsListProps> = ({ userId }) => {
     });
   }, [searchParams]);
 
-  useEffect(() => {    
+  useEffect(() => {
     if (userId) {
       setSearchParams((prev) => {
         prev.set("userId", userId.toString());
@@ -61,7 +65,7 @@ export const SnippetsList: FCWithSkeleton<SnippetsListProps> = ({ userId }) => {
         sortOptions={sortOptions}
         searchByOptions={searchByOptions}
         className="flex-row flex-wrap justify-around"
-        onAddItem={() => onOpenSnippetFrom()}
+        onAddItem={authUser !== null ? () => onOpenSnippetFrom() : undefined}
       />
       <SnippetForm
         open={isSnippetFormOpen}
