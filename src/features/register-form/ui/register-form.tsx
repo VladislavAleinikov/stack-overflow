@@ -9,13 +9,13 @@ import Link from "@mui/material/Link";
 import { NavLink, useNavigate } from "react-router";
 import { userSchema, type UserFormValues } from "../schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  createAuthQueryOptions,
-} from "@/shared/query-options";
+import { createAuthQueryOptions } from "@/shared/query-options";
 import { createRegisterMutationOptions } from "../query-options/create-register-mutation-options";
 
 export const RegisterForm = () => {
-  const { mutateAsync: signup, isPending } = useMutation(createRegisterMutationOptions());
+  const { mutateAsync: signup, isPending } = useMutation(
+    createRegisterMutationOptions()
+  );
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const {
@@ -33,7 +33,7 @@ export const RegisterForm = () => {
     },
   });
 
-  const onSubmit = ({
+  const onSubmit = async ({
     username,
     password,
     confirmPassword,
@@ -73,7 +73,7 @@ export const RegisterForm = () => {
         error={!!errors["username"]}
       >
         <InputLabel htmlFor="username">Username</InputLabel>
-        <Input {...register("username")} />
+        <Input id="username" {...register("username")} />
         {errors["username"] && (
           <FormHelperText id="component-error-text">
             {errors["username"].message}
@@ -86,7 +86,7 @@ export const RegisterForm = () => {
         error={!!errors["password"]}
       >
         <InputLabel htmlFor="password">Password</InputLabel>
-        <Input {...register("password")} type="password" />
+        <Input id="password" {...register("password")} type="password" />
         {errors["password"] && (
           <FormHelperText id="component-error-text">
             {errors["password"].message}
@@ -99,7 +99,11 @@ export const RegisterForm = () => {
         error={!!errors["confirmPassword"]}
       >
         <InputLabel htmlFor="confirmPassword">Confirm password</InputLabel>
-        <Input {...register("confirmPassword")} type="password" />
+        <Input
+          id="confirmPassword"
+          {...register("confirmPassword")}
+          type="password"
+        />
         {errors["confirmPassword"] && (
           <FormHelperText id="component-error-text">
             {errors["confirmPassword"].message}
