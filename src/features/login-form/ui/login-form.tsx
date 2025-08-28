@@ -60,7 +60,7 @@ export const LoginForm = () => {
         error={!!errors["username"]}
       >
         <InputLabel htmlFor="username">Username</InputLabel>
-        <Input {...register("username")} />
+        <Input id="username" {...register("username")} />
         {errors["username"] && (
           <FormHelperText id="component-error-text">
             {errors["username"].message}
@@ -73,7 +73,7 @@ export const LoginForm = () => {
         error={!!errors["password"]}
       >
         <InputLabel htmlFor="password">Password</InputLabel>
-        <Input {...register("password")} type="password" />
+        <Input id="password" {...register("password")} type="password" />
         {errors["password"] && (
           <FormHelperText id="component-error-text">
             {errors["password"].message}
