@@ -115,9 +115,6 @@ describe("RegisterForm", () => {
 
   it("shows error when passwords are different", async () => {
     const user = userEvent.setup();
-    mockRegisterMutation.mockResolvedValueOnce({
-      message: "Sign up successfuly",
-    });
     renderComponent();
 
     await user.type(screen.getByLabelText(/username/i), "testuser");
@@ -164,14 +161,14 @@ describe("RegisterForm", () => {
     renderComponent();
 
     const username = screen.getByLabelText(/username/i);
-    await user.type(username, "existing username");
+    await user.type(username, "existing");
     await user.type(screen.getByLabelText("Password"), "Password123$");
     await user.type(screen.getByLabelText("Confirm password"), "Password123$");
     await user.click(screen.getByRole("button", { name: /confirm/i }));
 
     await waitFor(() => {
       expect(mockRegisterMutation).toHaveBeenCalledWith({
-        username: "existing username",
+        username: "existing",
         password: "Password123$",
       });
       expect(toast.error).toHaveBeenCalledWith(errorMessage);

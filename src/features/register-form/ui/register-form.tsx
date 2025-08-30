@@ -110,7 +110,7 @@ export const RegisterForm = () => {
           </FormHelperText>
         )}
       </FormControl>
-      <Button type="submit" variant="contained" disabled={isPending}>
+      <Button type="submit" disabled={isPending} variant="contained">
         Confirm
       </Button>
       <Link component={NavLink} className="flex text-center" to="/login">
