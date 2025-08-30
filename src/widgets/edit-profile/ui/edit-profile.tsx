@@ -15,7 +15,7 @@ export const EditProfile = () => {
   return (
     <Paper className="w-[80%] p-16 flex flex-wrap justify-around space-y-4">
       <h4 className="w-full text-center tracking-widest">Edit your profile</h4>
-      <ChangeUsernameForm currentUsername={user.username} />
+      <ChangeUsernameForm userId={user.id} currentUsername={user.username} />
       <ChangePasswordForm/>
     </Paper>
   );
