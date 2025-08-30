@@ -39,6 +39,7 @@ export const ChangePasswordForm = () => {
         { message: "New password must be different from the old one" },
         { shouldFocus: true }
       );
+      setValue("newPassword", "");
       setValue("confirmPassword", "");
       return;
     }
@@ -49,6 +50,7 @@ export const ChangePasswordForm = () => {
         { message: "Passwords should be same" },
         { shouldFocus: true }
       );
+      setValue("newPassword", "");
       setValue("confirmPassword", "");
       return;
     }
@@ -75,8 +77,12 @@ export const ChangePasswordForm = () => {
           variant="standard"
           error={!!errors["oldPassword"]}
         >
-          <InputLabel htmlFor="username">Old password</InputLabel>
-          <Input {...register("oldPassword")} type="password" />
+          <InputLabel htmlFor="oldPassword">Old password</InputLabel>
+          <Input
+            id="oldPassword"
+            {...register("oldPassword")}
+            type="password"
+          />
           {errors["oldPassword"] && (
             <FormHelperText id="component-error-text">
               {errors["oldPassword"].message}
@@ -89,7 +95,11 @@ export const ChangePasswordForm = () => {
           error={!!errors["newPassword"]}
         >
           <InputLabel htmlFor="newPassword">New password</InputLabel>
-          <Input {...register("newPassword")} type="password" />
+          <Input
+            id="newPassword"
+            {...register("newPassword")}
+            type="password"
+          />
           {errors["newPassword"] && (
             <FormHelperText id="component-error-text">
               {errors["newPassword"].message}
@@ -102,7 +112,11 @@ export const ChangePasswordForm = () => {
           error={!!errors["confirmPassword"]}
         >
           <InputLabel htmlFor="confirmPassword">Confirm password</InputLabel>
-          <Input {...register("confirmPassword")} type="password" />
+          <Input
+            id="confirmPassword"
+            {...register("confirmPassword")}
+            type="password"
+          />
           {errors["confirmPassword"] && (
             <FormHelperText id="component-error-text">
               {errors["confirmPassword"].message}
