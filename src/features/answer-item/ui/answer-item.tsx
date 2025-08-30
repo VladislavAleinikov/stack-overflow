@@ -17,7 +17,8 @@ import {
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { createUpdateAnswerMutationOptions } from "../query-options/create-update-answer-mutation-options";
-import { NavLink } from "react-router";import DeleteIcon from "@mui/icons-material/Delete";
+import { NavLink } from "react-router";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface AnswerItemProps {
   answer: Answer;
@@ -50,7 +51,7 @@ export const AnswerItem: FCWithSkeleton<AnswerItemProps> = ({
     });
   };
 
-  const onTextareaSubmit = (
+  const onTextareaSubmit = async (
     e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>
   ) => {
     setIsEditing(false);
@@ -64,7 +65,7 @@ export const AnswerItem: FCWithSkeleton<AnswerItemProps> = ({
 
     updateAnswer(e.target.value).then(() => {
       queryClient.invalidateQueries({ queryKey: ["question"] });
-    });
+    }).catch(() => { });
   };
 
   return (
@@ -88,7 +89,7 @@ export const AnswerItem: FCWithSkeleton<AnswerItemProps> = ({
               </span>
             </NavLink>
             {isAuthUserAuthor && (
-              <IconButton onClick={() => setRemovedAnswerId(id)} color="error">
+              <IconButton onClick={() => setRemovedAnswerId(id)} color="error" data-testid="delete-button">
                 <DeleteIcon />
               </IconButton>
             )}
@@ -102,12 +103,14 @@ export const AnswerItem: FCWithSkeleton<AnswerItemProps> = ({
                 fullWidth
                 onBlur={onTextareaSubmit}
                 size="small"
+                data-testid="content-textarea"
               />
             ) : (
               <Button
                 variant="text"
                 onClick={onStartEditing}
                 className="normal-case whitespace-pre-line w-full mt-1 px-3 py-1 justify-start text-start text-[1rem] font-normal"
+                data-testid="content-button"
               >
                 {content}
               </Button>
