@@ -3,18 +3,21 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import React, { useState } from "react";
 import type { User } from "@/shared/types";
-import { createAuthQueryOptions, createLogoutMutationOptions } from "@/shared/query-options";
+import {
+  createAuthQueryOptions,
+  createLogoutMutationOptions,
+} from "@/shared/query-options";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 
-interface AccountMenuProps{
-  user: User
+interface AccountMenuProps {
+  user: User;
 }
 
 export const AccountMenu: React.FC<AccountMenuProps> = ({ user }) => {
   const { mutateAsync: logout } = useMutation(createLogoutMutationOptions());
   const queryClient = useQueryClient();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -27,11 +30,12 @@ export const AccountMenu: React.FC<AccountMenuProps> = ({ user }) => {
   };
 
   const onLogout = async () => {
-    await logout();
-    await queryClient.invalidateQueries({
-      queryKey: createAuthQueryOptions().queryKey,
-    });
-    navigate("/");
+    logout().then(() => {
+      queryClient.invalidateQueries({
+        queryKey: createAuthQueryOptions().queryKey,
+      });
+      navigate("/");
+    }).catch(() => { });
   };
 
   return (
@@ -41,9 +45,7 @@ export const AccountMenu: React.FC<AccountMenuProps> = ({ user }) => {
         onClick={handleClick}
         className="flex items-center ml-8 my-2 py-2 pr-6 rounded-lg text-muted-foreground normal-case"
       >
-        <Avatar className="w-5 h-5 mr-2 text-sm">
-          {user.username[0]}
-        </Avatar>
+        <Avatar className="w-5 h-5 mr-2 text-sm">{user.username[0]}</Avatar>
         {user.username}
       </Button>
       <Menu
@@ -68,4 +70,3 @@ export const AccountMenu: React.FC<AccountMenuProps> = ({ user }) => {
     </>
   );
 };
-
