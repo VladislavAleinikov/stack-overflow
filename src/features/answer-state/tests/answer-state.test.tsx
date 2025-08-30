@@ -108,7 +108,7 @@ describe("AnswerState", () => {
     const user = userEvent.setup();
     mockSetAnswerStatusMutation.mockImplementationOnce(
       () => new Promise(() => {})
-    ); // Never resolving promise
+    );
     renderComponent();
 
     await user.click(await screen.findByTestId("incorrect-button"));

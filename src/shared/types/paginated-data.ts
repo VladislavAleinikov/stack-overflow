@@ -12,5 +12,4 @@ sortBy: [string, "ASC" | "DESC"][];
 searchBy: string[];
 search: string;
 select: string[];
-// filter: Record<any, any>;
 }

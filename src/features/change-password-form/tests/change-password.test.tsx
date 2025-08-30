@@ -179,7 +179,7 @@ describe("ChangePasswordForm", () => {
     const user = userEvent.setup();
     mockChangePasswordMutation.mockImplementationOnce(
       () => new Promise(() => {})
-    ); // Never resolving promise
+    );
     renderComponent();
 
     await user.type(screen.getByLabelText("Old password"), "oldPassword");

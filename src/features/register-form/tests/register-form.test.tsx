@@ -152,7 +152,7 @@ describe("RegisterForm", () => {
 
   it("disables button while pending", async () => {
     const user = userEvent.setup();
-    mockRegisterMutation.mockImplementationOnce(() => new Promise(() => {})); // Never resolving promise
+    mockRegisterMutation.mockImplementationOnce(() => new Promise(() => {}));
     renderComponent();
 
     await user.type(screen.getByLabelText(/username/i), "testuser");
