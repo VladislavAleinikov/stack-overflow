@@ -36,18 +36,7 @@ export const RegisterForm = () => {
   const onSubmit = async ({
     username,
     password,
-    confirmPassword,
   }: UserFormValues) => {
-    if (password !== confirmPassword) {
-      setError(
-        "confirmPassword",
-        { message: "Passwords should be same" },
-        { shouldFocus: true }
-      );
-      setValue("confirmPassword", "");
-      return;
-    }
-
     signup({ username, password })
       .then(() => {
         queryClient.invalidateQueries({

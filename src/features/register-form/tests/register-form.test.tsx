@@ -103,7 +103,6 @@ describe("RegisterForm", () => {
     await waitFor(() => {
       expect(mockRegisterMutation).not.toHaveBeenCalled();
     });
-    expect(confirmPassword).toHaveFocus();
   });
 
   it("submits form successfully with valid data", async () => {
