@@ -57,18 +57,18 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
       attachedCode === question?.attachedCode);
 
   const onRequest = (promise: Promise<unknown>) => {
-    promise.then(() => {
-      queryClient.invalidateQueries({ queryKey: ["questions"] });
-      onClose();
-    }).catch(() => { });
+    promise
+      .then(() => {
+        queryClient.invalidateQueries({ queryKey: ["questions"] });
+        onClose();
+      })
+      .catch(() => {});
   };
 
   useEffect(() => {
-    if (question) {
-      setTitle(question.title);
-      setDescription(question.description);
-      setAttachedCode(question.attachedCode);
-    }
+    setTitle(question?.title || "");
+    setDescription(question?.description || "");
+    setAttachedCode(question?.attachedCode || "");
   }, [question]);
 
   return (
@@ -83,7 +83,7 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
       </DialogTitle>
       <DialogContent className="space-y-4 p-5">
         <TextField
-          value={question?.title}
+          value={title}
           onChange={(e) => setTitle(e.target.value)}
           label="Title"
           type="search"
@@ -91,7 +91,7 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
           className="w-full"
         />
         <TextField
-          value={question?.description}
+          value={description}
           onChange={(e) => setDescription(e.target.value)}
           label="Description"
           multiline

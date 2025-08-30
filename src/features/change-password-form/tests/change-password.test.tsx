@@ -1,30 +1,11 @@
+import "../mocks/change-password-form.mock";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ChangePasswordForm } from "../ui/change-password-form";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { toast } from "sonner";
-
-const mockChangePasswordMutation = jest.fn();
-jest.mock("../query-options/create-change-password-mutation-options", () => ({
-  createChangePasswordMutationOptions: () => ({
-    mutationKey: ["change-password"],
-    mutationFn: mockChangePasswordMutation,
-    onError: (error: Error) => {
-      toast.error(error.message);
-    },
-    onSuccess: (data: { message: string }) => {
-      toast.success(data.message);
-    },
-  }),
-}));
-
-jest.mock("sonner", () => ({
-  toast: {
-    success: jest.fn(),
-    error: jest.fn(),
-  },
-}));
+import { mockChangePasswordMutation } from "../mocks/change-password-form.mock";
 
 describe("ChangePasswordForm", () => {
   beforeEach(() => {
@@ -130,7 +111,7 @@ describe("ChangePasswordForm", () => {
     renderComponent();
 
     await user.type(screen.getByLabelText("Old password"), "Password123$");
-    const newPassword = screen.getByLabelText("New password")
+    const newPassword = screen.getByLabelText("New password");
     await user.type(newPassword, "Password123$");
     const confirmPassword = screen.getByLabelText("Confirm password");
     await user.type(confirmPassword, "Password123$");
@@ -166,7 +147,9 @@ describe("ChangePasswordForm", () => {
         oldPassword: "oldPassword",
         newPassword: "Password123$",
       });
-      expect(toast.success).toHaveBeenCalledWith("Changed password successfully");
+      expect(toast.success).toHaveBeenCalledWith(
+        "Changed password successfully"
+      );
     });
   });
 
@@ -194,7 +177,9 @@ describe("ChangePasswordForm", () => {
 
   it("disables button while pending", async () => {
     const user = userEvent.setup();
-    mockChangePasswordMutation.mockImplementationOnce(() => new Promise(() => {})); // Never resolving promise
+    mockChangePasswordMutation.mockImplementationOnce(
+      () => new Promise(() => {})
+    ); // Never resolving promise
     renderComponent();
 
     await user.type(screen.getByLabelText("Old password"), "oldPassword");

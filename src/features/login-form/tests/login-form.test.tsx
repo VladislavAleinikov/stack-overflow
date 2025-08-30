@@ -1,40 +1,11 @@
+import "../mocks/login-form.mock";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { LoginForm } from "../ui/login-form";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { toast } from "sonner";
-
-jest.mock("@/shared/query-options", () => ({
-  createAuthQueryOptions: jest.fn(() => ({ queryKey: ["auth"] })),
-}));
-
-const mockLoginMutation = jest.fn();
-jest.mock("../query-options/create-login-muataion-options", () => ({
-  createLoginMutationOptions: () => ({
-    mutationKey: ["login"],
-    mutationFn: mockLoginMutation,
-    onError: (error: Error) => {
-      toast.error(error.message);
-    },
-    onSuccess: (data: { message: string }) => {
-      toast.success(data.message);
-    },
-  }),
-}));
-
-jest.mock("sonner", () => ({
-  toast: {
-    success: jest.fn(),
-    error: jest.fn(),
-  },
-}));
-
-const navigateMock = jest.fn();
-jest.mock("react-router", () => ({
-  ...jest.requireActual("react-router"),
-  useNavigate: () => navigateMock,
-}));
+import { mockLoginMutation, navigateMock } from "../mocks/login-form.mock";
 
 describe("LoginForm", () => {
   beforeEach(() => {

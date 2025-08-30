@@ -1,56 +1,17 @@
+import "../mocks/answer-item.mock";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AnswerItem } from "../ui/answer-item";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { toast } from "sonner";
-import { UserRole, type Answer } from "@/shared/types";
-
-const mockAuth = jest.fn().mockResolvedValue({
-  id: 1,
-  username: "username",
-  role: UserRole.USER,
-});
-jest.mock("@/shared/query-options", () => ({
-  createAuthQueryOptions: jest.fn(() => ({
-    queryKey: ["auth"],
-    queryFn: mockAuth,
-  })),
-}));
-
-const mockChangeAnswer = jest.fn();
-jest.mock("../query-options/create-update-answer-mutation-options", () => ({
-  createUpdateAnswerMutationOptions: () => ({
-    mutationKey: ["change-answer"],
-    mutationFn: mockChangeAnswer,
-    onError: (error: Error) => {
-      toast.error(error.message);
-    },
-    onSuccess: (data: { message: string }) => {
-      toast.success(data.message);
-    },
-  }),
-}));
-
-jest.mock("sonner", () => ({
-  toast: {
-    success: jest.fn(),
-    error: jest.fn(),
-  },
-}));
-
-const setRemovedAnswerIdMock = jest.fn();
-
-const mockAnswer: Answer = {
-  id: 1,
-  content: "content",
-  isCorrect: false,
-  user: {
-    id: 1,
-    username: "username",
-    role: UserRole.USER,
-  },
-};
+import { UserRole } from "@/shared/types";
+import {
+  mockAuth,
+  mockChangeAnswer,
+  setRemovedAnswerIdMock,
+  mockAnswer,
+} from "../mocks/answer-item.mock";
 
 describe("AnswerItem", () => {
   beforeEach(() => {
@@ -79,7 +40,7 @@ describe("AnswerItem", () => {
       id: 2,
       username: "username",
       role: UserRole.USER,
-    })
+    });
     await renderComponent();
 
     expect(screen.queryByTestId("content-button")).toBeNull();

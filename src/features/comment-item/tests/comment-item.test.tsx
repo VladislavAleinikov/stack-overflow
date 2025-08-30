@@ -1,55 +1,17 @@
+import "../mocks/comment-item.mock";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { CommentItem } from "../ui/comment-item";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { toast } from "sonner";
-import { UserRole, type Comment } from "@/shared/types";
-
-const mockAuth = jest.fn().mockResolvedValue({
-  id: 1,
-  username: "username",
-  role: UserRole.USER,
-});
-jest.mock("@/shared/query-options", () => ({
-  createAuthQueryOptions: jest.fn(() => ({
-    queryKey: ["auth"],
-    queryFn: mockAuth,
-  })),
-}));
-
-const mockUpdateComment = jest.fn();
-jest.mock("../query-options/create-update-comment-mutation-options", () => ({
-  createUpdateCommentMutationOptions: () => ({
-    mutationKey: ["update-comment"],
-    mutationFn: mockUpdateComment,
-    onError: (error: Error) => {
-      toast.error(error.message);
-    },
-    onSuccess: (data: { message: string }) => {
-      toast.success(data.message);
-    },
-  }),
-}));
-
-jest.mock("sonner", () => ({
-  toast: {
-    success: jest.fn(),
-    error: jest.fn(),
-  },
-}));
-
-const setRemovedCommentIdMock = jest.fn();
-
-const mockComment: Comment = {
-  id: 1,
-  content: "content",
-  user: {
-    id: 1,
-    username: "username",
-    role: UserRole.USER,
-  },
-};
+import { UserRole } from "@/shared/types";
+import {
+  mockAuth,
+  mockUpdateComment,
+  setRemovedCommentIdMock,
+  mockComment,
+} from "../mocks/comment-item.mock";
 
 describe("CommentItem", () => {
   beforeEach(() => {

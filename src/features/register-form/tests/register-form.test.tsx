@@ -1,40 +1,14 @@
+import "../mocks/register-form.mock";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { RegisterForm } from "../ui/register-form";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { toast } from "sonner";
-
-jest.mock("@/shared/query-options", () => ({
-  createAuthQueryOptions: jest.fn(() => ({ queryKey: ["auth"] })),
-}));
-
-const mockRegisterMutation = jest.fn();
-jest.mock("../query-options/create-register-mutation-options", () => ({
-  createRegisterMutationOptions: () => ({
-    mutationKey: ["register"],
-    mutationFn: mockRegisterMutation,
-    onError: (error: Error) => {
-      toast.error(error.message);
-    },
-    onSuccess: (data: { message: string }) => {
-      toast.success(data.message);
-    },
-  }),
-}));
-
-jest.mock("sonner", () => ({
-  toast: {
-    success: jest.fn(),
-    error: jest.fn(),
-  },
-}));
-
-const navigateMock = jest.fn();
-jest.mock("react-router", () => ({
-  ...jest.requireActual("react-router"),
-  useNavigate: () => navigateMock,
-}));
+import {
+  mockRegisterMutation,
+  navigateMock,
+} from "../mocks/register-form.mock";
 
 describe("RegisterForm", () => {
   beforeEach(() => {

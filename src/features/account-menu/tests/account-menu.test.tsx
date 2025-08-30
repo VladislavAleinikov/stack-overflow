@@ -1,44 +1,15 @@
+import "../mocks/account-menu.mock";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AccountMenu } from "../ui/account-menu";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { toast } from "sonner";
-import { UserRole, type User } from "@/shared/types";
-
-const mockLogoutMutation = jest.fn();
-jest.mock("@/shared/query-options", () => ({
-  createAuthQueryOptions: jest.fn(() => ({ queryKey: ["auth"] })),
-  createLogoutMutationOptions: () => ({
-    mutationKey: ["logout"],
-    mutationFn: mockLogoutMutation,
-    onError: (error: Error) => {
-      toast.error(error.message);
-    },
-    onSuccess: (data: { message: string }) => {
-      toast.success(data.message);
-    },
-  }),
-}));
-
-jest.mock("sonner", () => ({
-  toast: {
-    success: jest.fn(),
-    error: jest.fn(),
-  },
-}));
-
-const navigateMock = jest.fn();
-jest.mock("react-router", () => ({
-  ...jest.requireActual("react-router"),
-  useNavigate: () => navigateMock,
-}));
-
-const currentUser: User = {
-  id: 1,
-  username: "username",
-  role: UserRole.USER,
-};
+import {
+  mockLogoutMutation,
+  navigateMock,
+  currentUserMock,
+} from "../mocks/account-menu.mock";
 
 describe("AccountMenu", () => {
   beforeEach(() => {
@@ -50,7 +21,7 @@ describe("AccountMenu", () => {
     return render(
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <AccountMenu user={currentUser} />
+          <AccountMenu user={currentUserMock} />
         </BrowserRouter>
       </QueryClientProvider>
     );
@@ -59,7 +30,7 @@ describe("AccountMenu", () => {
   it("dont render elements inside menu", () => {
     renderComponent();
 
-    expect(screen.getByText(currentUser.username)).toBeInTheDocument();
+    expect(screen.getByText(currentUserMock.username)).toBeInTheDocument();
     expect(screen.getByRole("button")).toBeInTheDocument();
   });
 
@@ -67,7 +38,7 @@ describe("AccountMenu", () => {
     const user = userEvent.setup();
     renderComponent();
 
-    expect(screen.getByText(currentUser.username)).toBeInTheDocument();
+    expect(screen.getByText(currentUserMock.username)).toBeInTheDocument();
     const menuButton = screen.getByRole("button");
     expect(menuButton).toBeInTheDocument();
 

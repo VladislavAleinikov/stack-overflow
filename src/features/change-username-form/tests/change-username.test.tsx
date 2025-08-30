@@ -1,35 +1,11 @@
+import "../mocks/change-username-form.mock";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ChangeUsernameForm } from "../ui/change-username-form";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { toast } from "sonner";
-
-jest.mock("@/shared/query-options", () => ({
-  createAuthQueryOptions: jest.fn(() => ({ queryKey: ["auth"] })),
-}));
-
-const mockChangeUsernameMutation = jest.fn();
-jest.mock("../query-options/create-change-username-mutation-options", () => ({
-  createChangeUsernameMutationOptions: () => ({
-    mutationKey: ["change-username"],
-    mutationFn: mockChangeUsernameMutation,
-    onError: (error: Error) => {
-      toast.error(error.message);
-    },
-    onSuccess: (data: { message: string }) => {
-      toast.success(data.message);
-    },
-  }),
-}));
-
-jest.mock("sonner", () => ({
-  toast: {
-    success: jest.fn(),
-    error: jest.fn(),
-  },
-}));
-
+import { mockChangeUsernameMutation } from "../mocks/change-username-form.mock";
 
 describe("ChangeUsername", () => {
   beforeEach(() => {
@@ -75,7 +51,9 @@ describe("ChangeUsername", () => {
 
   it("submits form successfully with valid data", async () => {
     const user = userEvent.setup();
-    mockChangeUsernameMutation.mockResolvedValueOnce({ message: "Username was changed" });
+    mockChangeUsernameMutation.mockResolvedValueOnce({
+      message: "Username was changed",
+    });
     renderComponent("");
 
     await user.type(screen.getByLabelText(/username/i), "testuser");
@@ -115,7 +93,9 @@ describe("ChangeUsername", () => {
 
   it("disables button while pending", async () => {
     const user = userEvent.setup();
-    mockChangeUsernameMutation.mockImplementationOnce(() => new Promise(() => {}));
+    mockChangeUsernameMutation.mockImplementationOnce(
+      () => new Promise(() => {})
+    );
     renderComponent("");
 
     await user.type(screen.getByLabelText(/username/i), "testuser");

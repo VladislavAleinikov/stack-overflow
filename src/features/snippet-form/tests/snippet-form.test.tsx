@@ -1,74 +1,16 @@
+import "../mocks/snippet-form.mock";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SnippetForm } from "../ui/snippet-form";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter } from "react-router-dom";
 import { toast } from "sonner";
-import { UserRole, type Snippet, Languages } from "@/shared/types";
-
-const mockUpdateSnippet = jest.fn();
-jest.mock("../query-options/create-update-snippet-mutation-options", () => ({
-  createUpdateSnippetMutationOptions: () => ({
-    mutationKey: ["update-snippet"],
-    mutationFn: mockUpdateSnippet,
-    onError: (error: Error) => {
-      toast.error(error.message);
-    },
-    onSuccess: (data: { message: string }) => {
-      toast.success(data.message);
-    },
-  }),
-}));
-
-const mockDeleteSnippet = jest.fn();
-jest.mock("../query-options/create-delete-snippet-mutation-options", () => ({
-  createDeleteSnippetMutationOptions: () => ({
-    mutationKey: ["delete-snippet"],
-    mutationFn: mockDeleteSnippet,
-    onError: (error: Error) => {
-      toast.error(error.message);
-    },
-    onSuccess: (data: { message: string }) => {
-      toast.success(data.message);
-    },
-  }),
-}));
-
-const mockAddSnippet = jest.fn();
-jest.mock("../query-options/create-add-snippet-mutation-options", () => ({
-  createAddSnippetMutationOptions: () => ({
-    mutationKey: ["add-snippet"],
-    mutationFn: mockAddSnippet,
-    onError: (error: Error) => {
-      toast.error(error.message);
-    },
-    onSuccess: (data: { message: string }) => {
-      toast.success(data.message);
-    },
-  }),
-}));
-
-jest.mock("sonner", () => ({
-  toast: {
-    success: jest.fn(),
-    error: jest.fn(),
-  },
-}));
-
-const onCloseMock = jest.fn();
-
-const mockSnippet: Snippet = {
-  id: 1,
-  language: Languages.JavaScript,
-  code: "const variable = 'some value';",
-  user: {
-    id: 1,
-    username: "username",
-    role: UserRole.USER,
-  },
-  marks: [],
-  comments: [],
-};
+import { type Snippet, Languages } from "@/shared/types";
+import {
+  mockUpdateSnippet,
+  mockDeleteSnippet,
+  mockSnippet,
+  onCloseMock,
+} from "../mocks/snippet-form.mock";
 
 describe("SnippetForm", () => {
   beforeEach(() => {
@@ -79,7 +21,7 @@ describe("SnippetForm", () => {
     const queryClient = new QueryClient();
     return render(
       <QueryClientProvider client={queryClient}>
-          <SnippetForm open={open} onClose={onCloseMock} snippet={snippet} />
+        <SnippetForm open={open} onClose={onCloseMock} snippet={snippet} />
       </QueryClientProvider>
     );
   };
@@ -145,7 +87,7 @@ describe("SnippetForm", () => {
       expect(mockDeleteSnippet).toHaveBeenCalled();
       expect(toast.success).toHaveBeenCalledWith(message);
     });
-      expect(onCloseMock).toHaveBeenCalled();
+    expect(onCloseMock).toHaveBeenCalled();
   });
 
   it("should handle delete snippet error correctly", async () => {
@@ -181,7 +123,6 @@ describe("SnippetForm", () => {
       expect(toast.success).toHaveBeenCalledWith(message);
       expect(onCloseMock).toHaveBeenCalled();
     });
-    
   });
 
   it("should handle update snippet error correctly", async () => {
@@ -231,7 +172,7 @@ describe("SnippetForm", () => {
 
   //   await user.click(screen.getByTestId("code-input"));
   //   console.log(screen.getByTestId("code-input"));
-    
+
   //   await user.keyboard(mockSnippet.code);
   //   await user.click(screen.getByTestId("add-button"));
 

@@ -1,29 +1,10 @@
+import "../mocks/answer-state.mock";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AnswerState } from "../ui/answer-state";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { toast } from "sonner";
-
-const mockSetAnswerStatusMutation = jest.fn();
-jest.mock("../query-options/create-set-answer-state-mutation-options", () => ({
-  createSetAnswerStateMutatioinOptions: () => ({
-    mutationKey: ["set-status"],
-    mutationFn: mockSetAnswerStatusMutation,
-    onError: (error: Error) => {
-      toast.error(error.message);
-    },
-    onSuccess: (data: { message: string }) => {
-      toast.success(data.message);
-    },
-  }),
-}));
-
-jest.mock("sonner", () => ({
-  toast: {
-    success: jest.fn(),
-    error: jest.fn(),
-  },
-}));
+import { mockSetAnswerStatusMutation } from "../mocks/answer-state.mock";
 
 describe("AnswerState", () => {
   beforeEach(() => {
@@ -37,11 +18,11 @@ describe("AnswerState", () => {
     const queryClient = new QueryClient();
     return render(
       <QueryClientProvider client={queryClient}>
-          <AnswerState
-            answerId={1}
-            isCorrect={isCorrect}
-            isAuthUserQuestionAuthor={isAuthUserQuestionAuthor}
-          />
+        <AnswerState
+          answerId={1}
+          isCorrect={isCorrect}
+          isAuthUserQuestionAuthor={isAuthUserQuestionAuthor}
+        />
       </QueryClientProvider>
     );
   };
@@ -114,7 +95,7 @@ describe("AnswerState", () => {
     const errorMessage = "something went wrong";
     mockSetAnswerStatusMutation.mockRejectedValueOnce(new Error(errorMessage));
     renderComponent();
- 
+
     await user.click(await screen.findByTestId("incorrect-button"));
 
     await waitFor(() => {
@@ -125,7 +106,9 @@ describe("AnswerState", () => {
 
   it("buttons shoud be disabled while pending", async () => {
     const user = userEvent.setup();
-    mockSetAnswerStatusMutation.mockImplementationOnce(() => new Promise(() => {})); // Never resolving promise
+    mockSetAnswerStatusMutation.mockImplementationOnce(
+      () => new Promise(() => {})
+    ); // Never resolving promise
     renderComponent();
 
     await user.click(await screen.findByTestId("incorrect-button"));
