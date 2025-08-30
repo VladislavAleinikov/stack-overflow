@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import {
   useMutation,
-  useSuspenseQuery,
   useQueryClient,
 } from "@tanstack/react-query";
 import { createChangeUsernameMutationOptions } from "@/features/change-username-form/query-options/create-change-username-mutation-options";
@@ -22,14 +21,15 @@ import {
 } from "@/shared/query-options";
 
 interface ChangeUsernameFormProps {
+  userId: number;
   currentUsername: string;
 }
 
 export const ChangeUsernameForm: React.FC<ChangeUsernameFormProps> = ({
+  userId,
   currentUsername,
 }) => {
   const [username, setUsername] = useState<string>(currentUsername);
-  const { data: authUser } = useSuspenseQuery(createAuthQueryOptions());
   const { mutateAsync: changeUsername, isPending } = useMutation(
     createChangeUsernameMutationOptions()
   );
@@ -46,15 +46,11 @@ export const ChangeUsernameForm: React.FC<ChangeUsernameFormProps> = ({
     },
   });
 
-  const onSubmit = (data: UsernameFormValues) => {
-    console.log([
-      ...createAuthQueryOptions().queryKey,
-      ...createUserQueryOptions(authUser!.id).queryKey,
-    ]);
+  const onSubmit = async (data: UsernameFormValues) => {
     changeUsername(data)
       .then(() => {
         queryClient.invalidateQueries({
-          queryKey: createUserQueryOptions(authUser!.id).queryKey,
+          queryKey: createUserQueryOptions(userId).queryKey,
         });
         queryClient.invalidateQueries({
           queryKey: createAuthQueryOptions().queryKey,
@@ -85,6 +81,7 @@ export const ChangeUsernameForm: React.FC<ChangeUsernameFormProps> = ({
         >
           <InputLabel htmlFor="username">Username</InputLabel>
           <Input
+            id="username"
             {...register("username")}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
