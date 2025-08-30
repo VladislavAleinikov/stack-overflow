@@ -1,4 +1,5 @@
 export type { User, UserWithStatistic, Statistic } from "./user";
+export  { UserRole } from "./user";
 export type { Snippet } from "./snippet";
 export { MarkType, Languages } from "./snippet";
 export type { Comment } from "./comment";

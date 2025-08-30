@@ -6,7 +6,7 @@ export type User = {
 
 export type UserWithStatistic = User & { statistic: Statistic };
 
-enum UserRole {
+export enum UserRole {
   USER = "user",
   ADMIN = "admin",
 }
