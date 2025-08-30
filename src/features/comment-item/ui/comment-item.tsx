@@ -60,9 +60,11 @@ export const CommentItem: FCWithSkeleton<CommentItemProps> = ({
       return;
     }
 
-    updateComment(e.target.value).then(() => {
-      queryClient.invalidateQueries({ queryKey: ["snippet"] });
-    });
+    updateComment(e.target.value)
+      .then(() => {
+        queryClient.invalidateQueries({ queryKey: ["snippet"] });
+      })
+      .catch(() => {});
   };
 
   return (
@@ -80,7 +82,11 @@ export const CommentItem: FCWithSkeleton<CommentItemProps> = ({
             </span>
           </NavLink>
           {isAuthUserAuthor && (
-            <IconButton onClick={() => setRemovedCommentId(id)} color="error">
+            <IconButton
+              onClick={() => setRemovedCommentId(id)}
+              color="error"
+              data-testid="delete-button"
+            >
               <DeleteIcon />
             </IconButton>
           )}
@@ -94,12 +100,14 @@ export const CommentItem: FCWithSkeleton<CommentItemProps> = ({
               fullWidth
               onBlur={onTextareaSubmit}
               size="small"
+              data-testid="content-textarea"
             />
           ) : (
             <Button
               variant="text"
               onClick={onStartEditing}
               className="normal-case whitespace-pre-line w-full mt-1 px-3 py-1 justify-start text-start text-[1rem] font-normal"
+              data-testid="content-button"
             >
               {content}
             </Button>
