@@ -60,7 +60,7 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
     promise.then(() => {
       queryClient.invalidateQueries({ queryKey: ["questions"] });
       onClose();
-    });
+    }).catch(() => { });
   };
 
   useEffect(() => {
@@ -72,7 +72,12 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
   }, [question]);
 
   return (
-    <Dialog className={className} open={open} onClose={onClose}>
+    <Dialog
+      className={className}
+      open={open}
+      onClose={onClose}
+      data-testid="dialog"
+    >
       <DialogTitle className="uppercase text-4xl text-center tracking-widest">
         {question ? "Edit question" : "Ask question"}
       </DialogTitle>
@@ -101,6 +106,7 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
           className="text-sm text-left w-[400px]"
           height="200px"
           onChange={(val) => setAttachedCode(val)}
+          data-testid="code-input"
         />
         {question ? (
           <>
@@ -110,6 +116,7 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
                 onRequest(updateQuestion({ title, description, attachedCode }))
               }
               disabled={isButtonDisabled}
+              data-testid="update-button"
             >
               <SaveIcon className="w-4 h-4 mr-2" />
               Save changes
@@ -119,13 +126,14 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
               onClick={() => setIsAlertOpen(true)}
               color="error"
               className="float-right"
+              data-testid="delete-button"
             >
               <DeleteIcon className="w-4 h-4 mr-2" />
               Delete question
             </Button>
             <AlertDialog
               open={isAlertOpen}
-              title="Are you shure you want to delete this snippet?"
+              title="Are you shure you want to delete this question?"
               text="This action can't be canceled"
               onConfirm={() => onRequest(deleteQuestion())}
               onClose={() => setIsAlertOpen(false)}
@@ -136,6 +144,7 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
             variant="contained"
             onClick={() => addQuestion({ title, description, attachedCode })}
             disabled={isButtonDisabled}
+            data-testid="add-button"
           >
             <AddIcon className="w-4 h-4 mr-2" />
             Add question
