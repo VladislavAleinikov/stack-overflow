@@ -24,6 +24,9 @@ export const DetailedSnippet: FCWithSkeleton<DetailedSnippetProps> = ({
   const { data: authUser } = useSuspenseQuery(createAuthQueryOptions());
   const navigate = useNavigate();
 
+  const onSetIsSnippetFormOpen = (isOpen: boolean) => () =>
+    setIsSnippetFormOpen(isOpen);
+
   if (snippet === null) {
     return (
       <Paper className="p-16 flex flex-col justify-center items-center space-y-4">
@@ -52,14 +55,14 @@ export const DetailedSnippet: FCWithSkeleton<DetailedSnippetProps> = ({
             <>
               <Button
                 variant="contained"
-                onClick={() => setIsSnippetFormOpen(true)}
+                onClick={onSetIsSnippetFormOpen(true)}
               >
                 <EditIcon className="w-4 h-4 mr-2" />
                 Edit snippet
               </Button>
               <SnippetForm
                 open={isSnippetFormOpen}
-                onClose={() => setIsSnippetFormOpen(false)}
+                onClose={onSetIsSnippetFormOpen(false)}
                 snippet={snippet}
               />
             </>
@@ -67,7 +70,7 @@ export const DetailedSnippet: FCWithSkeleton<DetailedSnippetProps> = ({
         </div>
         <SnippetItem
           snippet={snippet}
-          onOpenSnippetForm={() => setIsSnippetFormOpen(true)}
+          onOpenSnippetForm={onSetIsSnippetFormOpen(true)}
         />
       </div>
       <Divider />

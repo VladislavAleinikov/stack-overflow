@@ -56,7 +56,7 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
       description === question?.description &&
       attachedCode === question?.attachedCode);
 
-  const onRequest = (promise: Promise<unknown>) => {
+  const onRequest = (promise: Promise<unknown>) => () => {
     promise
       .then(() => {
         queryClient.invalidateQueries({ queryKey: ["questions"] });
@@ -64,6 +64,8 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
       })
       .catch(() => {});
   };
+
+  const onSetAlertOpen = (isOpen: boolean) => () => setIsAlertOpen(isOpen);
 
   useEffect(() => {
     setTitle(question?.title || "");
@@ -112,9 +114,9 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
           <>
             <Button
               variant="contained"
-              onClick={() =>
-                onRequest(updateQuestion({ title, description, attachedCode }))
-              }
+              onClick={onRequest(
+                updateQuestion({ title, description, attachedCode })
+              )}
               disabled={isButtonDisabled}
               data-testid="update-button"
             >
@@ -123,7 +125,7 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
             </Button>
             <Button
               variant="contained"
-              onClick={() => setIsAlertOpen(true)}
+              onClick={onSetAlertOpen(true)}
               color="error"
               className="float-right"
               data-testid="delete-button"
@@ -135,14 +137,16 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
               open={isAlertOpen}
               title="Are you shure you want to delete this question?"
               text="This action can't be canceled"
-              onConfirm={() => onRequest(deleteQuestion())}
-              onClose={() => setIsAlertOpen(false)}
+              onConfirm={onRequest(deleteQuestion())}
+              onClose={onSetAlertOpen(false)}
             />
           </>
         ) : (
           <Button
             variant="contained"
-            onClick={() => addQuestion({ title, description, attachedCode })}
+            onClick={onRequest(
+              addQuestion({ title, description, attachedCode })
+            )}
             disabled={isButtonDisabled}
             data-testid="add-button"
           >

@@ -20,6 +20,9 @@ export const ThemeSwitcher = () => {
     setAnchorEl(null);
   };
 
+  const onSetMode = (newMode: "light" | "dark" | "system") => () =>
+    setMode(newMode);
+
   useEffect(() => {
     if (colorScheme === "dark") {
       document.body.classList.add("dark");
@@ -40,15 +43,15 @@ export const ThemeSwitcher = () => {
         <span className="sr-only">Toggle theme</span>
       </IconButton>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        <MenuItem onClick={() => setMode("system")}>
+        <MenuItem onClick={onSetMode("system")}>
           <ContrastIcon className="w-4 h-4 mr-2" />
           System
         </MenuItem>
-        <MenuItem onClick={() => setMode("dark")}>
+        <MenuItem onClick={onSetMode("dark")}>
           <DarkModeIcon className="w-4 h-4 mr-2" />
           Dark
         </MenuItem>
-        <MenuItem onClick={() => setMode("light")}>
+        <MenuItem onClick={onSetMode("light")}>
           <LightModeIcon className="w-4 h-4 mr-2" />
           Light
         </MenuItem>

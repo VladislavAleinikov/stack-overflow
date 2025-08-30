@@ -22,7 +22,7 @@ export const AnswerState: React.FC<AnswerStateProps> = ({
   );
   const queryClient = useQueryClient();
 
-  const onUpdateState = (newState: AnswerStateType) => {
+  const onUpdateState = (newState: AnswerStateType) => () => {
     setAnswerState(newState).then(() => {
       queryClient.invalidateQueries({ queryKey: ["question"] });
     }).catch(() => { });
@@ -59,7 +59,7 @@ export const AnswerState: React.FC<AnswerStateProps> = ({
           "rounded-full p-0 min-w-min border-primary",
           isCorrect && "border-success"
         )}
-        onClick={() => onUpdateState("correct")}
+        onClick={onUpdateState("correct")}
         disabled={isPending || isCorrect}
         data-testid="correct-button"
       >
@@ -76,7 +76,7 @@ export const AnswerState: React.FC<AnswerStateProps> = ({
           "rounded-full p-0 min-w-min border-primary",
           !isCorrect && "border-error"
         )}
-        onClick={() => onUpdateState("incorrect")}
+        onClick={onUpdateState("incorrect")}
         disabled={isPending || !isCorrect}
         data-testid="incorrect-button"
       >

@@ -25,12 +25,16 @@ export const DetailedQuestion: FCWithSkeleton<DetailedQuestionProps> = ({
   const { data: authUser } = useSuspenseQuery(createAuthQueryOptions());
   const navigate = useNavigate();
 
+  const onNavigate = (path: string) => () => navigate(path);
+
+  const onSetIsQuestionFormOpen = (isOpen: boolean) => () => setIsQuestionFormOpen(isOpen);
+
   if (question === null) {
     return (
       <Paper className="p-16 flex flex-col justify-center items-center space-y-4">
         <h1>404</h1>
         <h3>Question not found!</h3>
-        <Button variant="contained" onClick={() => navigate("/")}>
+        <Button variant="contained" onClick={onNavigate("/")}>
           Return to home page
         </Button>
       </Paper>
@@ -52,14 +56,14 @@ export const DetailedQuestion: FCWithSkeleton<DetailedQuestionProps> = ({
             <>
               <Button
                 variant="contained"
-                onClick={() => setIsQuestionFormOpen(true)}
+                onClick={onSetIsQuestionFormOpen(true)}
               >
                 <EditIcon className="w-4 h-4 mr-2" />
                 Edit question
               </Button>
               <QuestionForm
                 open={isQuestionFormOpen}
-                onClose={() => setIsQuestionFormOpen(false)}
+                onClose={onSetIsQuestionFormOpen(false)}
                 question={question}
               />
             </>
@@ -69,7 +73,7 @@ export const DetailedQuestion: FCWithSkeleton<DetailedQuestionProps> = ({
           Asked by:{" "}
           <span
             className="cursor-pointer italic underline hover:text-primary"
-            onClick={() => navigate(`/users/${user.id}`)}
+            onClick={onNavigate(`/users/${user.id}`)}
           >
             {user.username}
           </span>

@@ -48,6 +48,8 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleNavigate = (path: string) => () => navigate(path);
+
   return (
     <div
       className={`w-full rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 ${className}`}
@@ -89,7 +91,7 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
           </button>
         ) : (
           <button
-            onClick={() => navigate(`/users/${author.id}`)}
+            onClick={handleNavigate(`/users/${author.id}`)}
             disabled={authUser === null}
             className="cursor-pointer text-xs text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
           >
@@ -100,7 +102,7 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
 
         {snippetId && (
           <button
-            onClick={() => navigate(`/snippets/${snippetId}`)}
+            onClick={handleNavigate(`/snippets/${snippetId}`)}
             className="cursor-pointer text-xs text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
           >
             <CommentIcon className="w-4 h-4 mr-2" />

@@ -39,6 +39,8 @@ export const Header: FCWithSkeleton<NavbarProps> = ({
     });
     navigate("/");
   };
+  
+  const onNavigate = (path: string) => () => navigate(path);
 
   return (
     <>
@@ -56,12 +58,12 @@ export const Header: FCWithSkeleton<NavbarProps> = ({
               <>
                 <Button
                   variant="contained"
-                  onClick={() => navigate("/register")}
+                  onClick={onNavigate("/register")}
                 >
                   <PersonAddIcon className="w-4 h-4 mr-2" />
                   Sign up
                 </Button>
-                <Button variant="contained" onClick={() => navigate("/login")}>
+                <Button variant="contained" onClick={onNavigate("/login")}>
                   <LoginIcon className="w-4 h-4 mr-2" />
                   Login
                 </Button>

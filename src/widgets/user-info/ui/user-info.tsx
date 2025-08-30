@@ -26,7 +26,9 @@ export const UserInfo: FCWithSkeleton<UserInfoProps> = ({ userId }) => {
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
   const { data: authUser } = useSuspenseQuery(createAuthQueryOptions());
   const { mutateAsync: logout } = useMutation(createLogoutMutationOptions());
-  const { mutateAsync: deleteUser } = useMutation(createDeleteUserMutationOptions());
+  const { mutateAsync: deleteUser } = useMutation(
+    createDeleteUserMutationOptions()
+  );
   const { data: user } = useSuspenseQuery(createUserQueryOptions(userId));
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -37,7 +39,7 @@ export const UserInfo: FCWithSkeleton<UserInfoProps> = ({ userId }) => {
         queryKey: createAuthQueryOptions().queryKey,
       });
       navigate("/");
-    })
+    });
   };
 
   const onDelete = async () => {
@@ -46,15 +48,20 @@ export const UserInfo: FCWithSkeleton<UserInfoProps> = ({ userId }) => {
         queryKey: createAuthQueryOptions().queryKey,
       });
       navigate("/");
-    })
-  }
+    });
+  };
+
+  const onNavigate = (path: string) => () => navigate(path);
+
+  const onSetIsAlertOpen = (isOpen: boolean) => () =>
+    setIsAlertOpen(isOpen);
 
   if (user === null) {
     return (
       <Paper className="p-16 flex flex-col justify-center items-center space-y-4">
         <h1>404</h1>
         <h3>User not found!</h3>
-        <Button variant="contained" onClick={() => navigate("/")}>
+        <Button variant="contained" onClick={onNavigate("/")}>
           Return to home page
         </Button>
       </Paper>
@@ -73,7 +80,7 @@ export const UserInfo: FCWithSkeleton<UserInfoProps> = ({ userId }) => {
         <Button
           variant="contained"
           size="small"
-          onClick={() => navigate(`/users/${userId}/snippets`)}
+          onClick={onNavigate(`/users/${userId}/snippets`)}
         >
           Snippets
         </Button>
@@ -83,7 +90,7 @@ export const UserInfo: FCWithSkeleton<UserInfoProps> = ({ userId }) => {
               className="shadow-lg"
               color="error"
               size="large"
-              onClick={() => setIsAlertOpen(true)}
+              onClick={onSetIsAlertOpen(true)}
             >
               <DeleteIcon className="w-5 h-5" />
             </IconButton>
@@ -95,7 +102,7 @@ export const UserInfo: FCWithSkeleton<UserInfoProps> = ({ userId }) => {
               title="Are you shure you want to delete your account?"
               text="This action can't be canceled"
               onConfirm={onDelete}
-              onClose={() => setIsAlertOpen(false)}
+              onClose={onSetIsAlertOpen(false)}
             />
           </div>
         )}

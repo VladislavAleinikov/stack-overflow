@@ -53,12 +53,14 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
   const { mode, systemMode } = useColorScheme();
   const themeStyle = getThemeStyle(mode, systemMode);
 
-  const onRequest = (promise: Promise<unknown>) => {
+  const onRequest = (promise: Promise<unknown>) => () =>{
     promise.then(() => {
       queryClient.invalidateQueries({ queryKey: ["snippets"] });
       onClose();
     }).catch(() => { });
   };
+
+  const onSetAlertOpen = (isOpen: boolean) => () => setIsAlertOpen(isOpen);
 
   useEffect(() => {
     if (snippet) {
@@ -107,8 +109,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
           <>
             <Button
               variant="contained"
-              onClick={() =>
-                onRequest(updateSnippet({ code, language: selectedLanguage }))
+              onClick={onRequest(updateSnippet({ code, language: selectedLanguage }))
               }
               disabled={
                 code.length === 0 ||
@@ -121,7 +122,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
             </Button>
             <Button
               variant="contained"
-              onClick={() => setIsAlertOpen(true)}
+              onClick={onSetAlertOpen(true)}
               color="error"
               className="float-right"
               data-testid="delete-button"
@@ -133,15 +134,14 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
               open={isAlertOpen}
               title="Are you shure you want to delete this snippet?"
               text="This action can't be canceled"
-              onConfirm={() => onRequest(deleteSnippet())}
-              onClose={() => setIsAlertOpen(false)}
+              onConfirm={onRequest(deleteSnippet())}
+              onClose={onSetAlertOpen(false)}
             />
           </>
         ) : (
           <Button
             variant="contained"
-            onClick={() =>
-              onRequest(addSnippet({ code, language: selectedLanguage }))
+            onClick={onRequest(addSnippet({ code, language: selectedLanguage }))
             }
             disabled={code.length === 0}
             data-testid="add-button"
