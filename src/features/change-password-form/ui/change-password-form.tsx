@@ -31,30 +31,7 @@ export const ChangePasswordForm = () => {
   const onSubmit = async ({
     oldPassword,
     newPassword,
-    confirmPassword,
   }: PasswordFormValues) => {
-    if (newPassword === oldPassword) {
-      setError(
-        "newPassword",
-        { message: "New password must be different from the old one" },
-        { shouldFocus: true }
-      );
-      setValue("newPassword", "");
-      setValue("confirmPassword", "");
-      return;
-    }
-
-    if (newPassword !== confirmPassword) {
-      setError(
-        "confirmPassword",
-        { message: "Passwords should be same" },
-        { shouldFocus: true }
-      );
-      setValue("newPassword", "");
-      setValue("confirmPassword", "");
-      return;
-    }
-
     changePassword({ oldPassword, newPassword })
       .then(() => reset())
       .catch(() => setFocus("oldPassword"));

@@ -101,9 +101,6 @@ describe("ChangePasswordForm", () => {
     await waitFor(() => {
       expect(mockChangePasswordMutation).not.toHaveBeenCalled();
     });
-    expect(confirmPassword).toHaveFocus();
-    expect(newPassword).toHaveValue("");
-    expect(confirmPassword).toHaveValue("");
   });
 
   it("shows error when new password is equal to old", async () => {
@@ -125,9 +122,6 @@ describe("ChangePasswordForm", () => {
     await waitFor(() => {
       expect(mockChangePasswordMutation).not.toHaveBeenCalled();
     });
-    expect(newPassword).toHaveFocus();
-    expect(newPassword).toHaveValue("");
-    expect(confirmPassword).toHaveValue("");
   });
 
   it("submits form successfully with valid data", async () => {
