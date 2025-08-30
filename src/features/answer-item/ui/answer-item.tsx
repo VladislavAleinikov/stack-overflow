@@ -14,7 +14,7 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { createUpdateAnswerMutationOptions } from "../query-options/create-update-answer-mutation-options";
 import { NavLink } from "react-router";
@@ -40,17 +40,6 @@ export const AnswerItem: FCWithSkeleton<AnswerItemProps> = ({
   const queryClient = useQueryClient();
   const isAuthUserAuthor = user.id === authUser?.id;
 
-  const onStartEditing = () => {
-    setIsEditing(true);
-    setTimeout(() => {
-      if (contentRef.current) {
-        contentRef.current.focus();
-        contentRef.current.selectionStart = contentRef.current.selectionEnd =
-          contentRef.current.value.length;
-      }
-    });
-  };
-
   const onTextareaSubmit = async (
     e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>
   ) => {
@@ -63,10 +52,20 @@ export const AnswerItem: FCWithSkeleton<AnswerItemProps> = ({
       return;
     }
 
-    updateAnswer(e.target.value).then(() => {
-      queryClient.invalidateQueries({ queryKey: ["question"] });
-    }).catch(() => { });
+    updateAnswer(e.target.value)
+      .then(() => {
+        queryClient.invalidateQueries({ queryKey: ["question"] });
+      })
+      .catch(() => {});
   };
+
+  useEffect(() => {
+    if (isEditing && contentRef.current) {
+      contentRef.current.focus();
+      contentRef.current.selectionStart = contentRef.current.selectionEnd =
+        contentRef.current.value.length;
+    }
+  }, [isEditing]);
 
   return (
     <>
@@ -89,7 +88,11 @@ export const AnswerItem: FCWithSkeleton<AnswerItemProps> = ({
               </span>
             </NavLink>
             {isAuthUserAuthor && (
-              <IconButton onClick={() => setRemovedAnswerId(id)} color="error" data-testid="delete-button">
+              <IconButton
+                onClick={() => setRemovedAnswerId(id)}
+                color="error"
+                data-testid="delete-button"
+              >
                 <DeleteIcon />
               </IconButton>
             )}
@@ -108,7 +111,7 @@ export const AnswerItem: FCWithSkeleton<AnswerItemProps> = ({
             ) : (
               <Button
                 variant="text"
-                onClick={onStartEditing}
+                onClick={() => setIsEditing(true)}
                 className="normal-case whitespace-pre-line w-full mt-1 px-3 py-1 justify-start text-start text-[1rem] font-normal"
                 data-testid="content-button"
               >

@@ -13,7 +13,7 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { createUpdateCommentMutationOptions } from "../query-options/create-update-comment-mutation-options";
 import { NavLink } from "react-router";
@@ -37,17 +37,6 @@ export const CommentItem: FCWithSkeleton<CommentItemProps> = ({
   const queryClient = useQueryClient();
   const isAuthUserAuthor = user.id === authUser?.id;
 
-  const onStartEditing = () => {
-    setIsEditing(true);
-    setTimeout(() => {
-      if (contentRef.current) {
-        contentRef.current.focus();
-        contentRef.current.selectionStart = contentRef.current.selectionEnd =
-          contentRef.current.value.length;
-      }
-    });
-  };
-
   const onTextareaSubmit = (
     e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>
   ) => {
@@ -66,6 +55,14 @@ export const CommentItem: FCWithSkeleton<CommentItemProps> = ({
       })
       .catch(() => {});
   };
+  
+    useEffect(() => {
+      if (isEditing && contentRef.current) {
+        contentRef.current.focus();
+        contentRef.current.selectionStart = contentRef.current.selectionEnd =
+          contentRef.current.value.length;
+      }
+    }, [isEditing]);
 
   return (
     <>
@@ -105,7 +102,7 @@ export const CommentItem: FCWithSkeleton<CommentItemProps> = ({
           ) : (
             <Button
               variant="text"
-              onClick={onStartEditing}
+              onClick={() => setIsEditing(true)}
               className="normal-case whitespace-pre-line w-full mt-1 px-3 py-1 justify-start text-start text-[1rem] font-normal"
               data-testid="content-button"
             >
