@@ -57,7 +57,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
     promise.then(() => {
       queryClient.invalidateQueries({ queryKey: ["snippets"] });
       onClose();
-    });
+    }).catch(() => { });
   };
 
   useEffect(() => {
@@ -68,7 +68,12 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
   }, [snippet]);
 
   return (
-    <Dialog className={className} open={open} onClose={onClose}>
+    <Dialog
+      className={className}
+      open={open}
+      onClose={onClose}
+      data-testid="dialog"
+    >
       <DialogTitle className="uppercase text-4xl text-center tracking-widest">
         {snippet ? "Edit snippet" : "Add new snippet"}
       </DialogTitle>
@@ -78,10 +83,8 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
           <Select
             labelId="language"
             value={selectedLanguage}
-            label="Age"
-            onChange={(e) =>
-              setSelectedLanguage(e.target.value as Languages)
-            }
+            label="Language"
+            onChange={(e) => setSelectedLanguage(e.target.value as Languages)}
           >
             {Object.values(Languages).map((lang) => (
               <MenuItem value={lang} key={lang}>
@@ -98,6 +101,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
           className="text-sm text-left w-[400px]"
           height="200px"
           onChange={(val) => setCode(val)}
+          data-testid="code-input"
         />
         {snippet ? (
           <>
@@ -110,6 +114,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
                 code.length === 0 ||
                 (code === snippet.code && selectedLanguage === snippet.language)
               }
+              data-testid="update-button"
             >
               <SaveIcon className="w-4 h-4 mr-2" />
               Save changes
@@ -119,6 +124,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
               onClick={() => setIsAlertOpen(true)}
               color="error"
               className="float-right"
+              data-testid="delete-button"
             >
               <DeleteIcon className="w-4 h-4 mr-2" />
               Delete snippet
@@ -138,6 +144,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
               onRequest(addSnippet({ code, language: selectedLanguage }))
             }
             disabled={code.length === 0}
+            data-testid="add-button"
           >
             <AddIcon className="w-4 h-4 mr-2" />
             Add snippet
