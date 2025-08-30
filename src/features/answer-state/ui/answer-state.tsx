@@ -4,7 +4,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Button } from "@mui/material";
 import { cn } from "@/shared/utils";
-import type { AnswerState } from "../types";
+import type { AnswerState as AnswerStateType } from "../types";
 
 interface AnswerStateProps {
   answerId: number;
@@ -22,10 +22,10 @@ export const AnswerState: React.FC<AnswerStateProps> = ({
   );
   const queryClient = useQueryClient();
 
-  const onUpdateState = (newState: AnswerState) => {
+  const onUpdateState = (newState: AnswerStateType) => {
     setAnswerState(newState).then(() => {
       queryClient.invalidateQueries({ queryKey: ["question"] });
-    });
+    }).catch(() => { });
   };
 
   if (!isAuthUserQuestionAuthor) {
@@ -37,9 +37,15 @@ export const AnswerState: React.FC<AnswerStateProps> = ({
         )}
       >
         {isCorrect ? (
-          <CheckIcon className="p-2 w-10 h-10 fill-success" />
+          <CheckIcon
+            data-testid="check-icon"
+            className="p-2 w-10 h-10 fill-success"
+          />
         ) : (
-          <CloseIcon className="p-2 w-10 h-10 fill-error" />
+          <CloseIcon
+            data-testid="cross-icon"
+            className="p-2 w-10 h-10 fill-error"
+          />
         )}
       </div>
     );
@@ -55,6 +61,7 @@ export const AnswerState: React.FC<AnswerStateProps> = ({
         )}
         onClick={() => onUpdateState("correct")}
         disabled={isPending || isCorrect}
+        data-testid="correct-button"
       >
         <CheckIcon
           className={cn(
@@ -71,6 +78,7 @@ export const AnswerState: React.FC<AnswerStateProps> = ({
         )}
         onClick={() => onUpdateState("incorrect")}
         disabled={isPending || !isCorrect}
+        data-testid="incorrect-button"
       >
         <CloseIcon
           className={cn(
