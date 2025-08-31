@@ -1,10 +1,5 @@
 import type { FCWithSkeleton, Question } from "@/shared/types";
-import {
-  Button,
-  Paper,
-  Skeleton,
-  Tooltip,
-} from "@mui/material";
+import { Button, Paper, Skeleton, Tooltip } from "@mui/material";
 import { useNavigate } from "react-router";
 import { cn } from "@/shared/utils";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -32,13 +27,11 @@ export const QuestionItem: FCWithSkeleton<QuestionItemProps> = ({
   const { data: authUser } = useSuspenseQuery(createAuthQueryOptions());
   const navigate = useNavigate();
 
-  const handleLinkClick = (
-    e: React.MouseEvent<HTMLSpanElement, MouseEvent>,
-    link: string
-  ) => {
-    e.stopPropagation();
-    navigate(link);
-  };
+  const handleLinkClick =
+    (link: string) => (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+      e.stopPropagation();
+      navigate(link);
+    };
 
   const onEdit = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     e.stopPropagation();
@@ -49,7 +42,7 @@ export const QuestionItem: FCWithSkeleton<QuestionItemProps> = ({
     <Paper
       className="cursor-pointer w-full p-4 flex items-start space-x-4 group transition hover:shadow-xl"
       elevation={3}
-      onClick={(e) => handleLinkClick(e, `/questions/${id}`)}
+      onClick={handleLinkClick(`/questions/${id}`)}
     >
       <div className="space-y-4">
         <div
@@ -86,7 +79,7 @@ export const QuestionItem: FCWithSkeleton<QuestionItemProps> = ({
           Asked by:{" "}
           <span
             className="cursor-pointer italic underline hover:text-primary"
-            onClick={(e) => handleLinkClick(e, `/users/${userId}`)}
+            onClick={handleLinkClick(`/users/${userId}`)}
           >
             {username}
           </span>
