@@ -21,9 +21,7 @@ export const RegisterForm = () => {
   const {
     register,
     handleSubmit,
-    setError,
     setFocus,
-    setValue,
     formState: { errors },
   } = useForm<UserFormValues>({
     resolver: zodResolver(userSchema),

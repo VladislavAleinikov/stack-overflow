@@ -40,7 +40,7 @@ export const SnippetsList: FCWithSkeleton<SnippetsListProps> = ({ userId }) => {
     queryClient.invalidateQueries({
       queryKey: ["snippets"],
     });
-  }, [searchParams]);
+  }, [queryClient, searchParams]);
 
   useEffect(() => {
     if (userId) {
@@ -49,7 +49,7 @@ export const SnippetsList: FCWithSkeleton<SnippetsListProps> = ({ userId }) => {
         return prev;
       });
     }
-  }, [userId]);
+  }, [setSearchParams, userId]);
 
   return (
     <>

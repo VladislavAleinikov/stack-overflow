@@ -19,8 +19,6 @@ export const ChangePasswordForm = () => {
   const {
     register,
     handleSubmit,
-    setError,
-    setValue,
     setFocus,
     reset,
     formState: { errors },

@@ -23,7 +23,7 @@ export const UsersList = () => {
     queryClient.invalidateQueries({
       queryKey: ["users"],
     });
-  }, [searchParams]);
+  }, [queryClient, searchParams]);
 
   return (
     <PaginatedList

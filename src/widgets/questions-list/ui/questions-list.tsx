@@ -31,7 +31,7 @@ export const QuestionsList = () => {
     queryClient.invalidateQueries({
       queryKey: [queryOptions.queryKey[0]],
     });
-  }, [searchParams]);
+  }, [queryClient, queryOptions.queryKey, searchParams]);
 
   return (
     <>
