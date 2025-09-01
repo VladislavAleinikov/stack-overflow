@@ -1,0 +1,1 @@
+export { DetailedSnippet } from "./ui/detailed-snippet"
